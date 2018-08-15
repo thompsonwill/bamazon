@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "A nodejs and mysql program that simulates a storefront in the console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thompsonwill/bamazon.git"
+  },
+  "author": "Will Thompson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thompsonwill/bamazon/issues"
+  },
+  "homepage": "https://github.com/thompsonwill/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^6.1.0",
+    "mysql": "^2.16.0"
+  }
+}
