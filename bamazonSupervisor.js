@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require('inquirer');
+var Table = require('cli-table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -55,6 +56,11 @@ function runAction() {
         });
 }
 
+var table = new Table({
+    head: ['ID', 'Department Name', 'Overhead Costs', 'Product Sales', 'Total Profit']
+});
+
+
 function viewSales() {
     connection.query("SELECT * FROM departments", function (err, res) {
         if (err) throw err;
@@ -67,9 +73,12 @@ function viewSales() {
 
             var i; for (i = 0; i < res.length; i++) {
                 var profit = resOne[i].product_sales - res[i].over_head_costs;
-                console.log("-------------------------------------------")
-                console.log("| ID: " + res[i].department_id + " | " + res[i].department_name + " | $" + res[i].over_head_costs + " | $" + resOne[i].product_sales + " | " + profit);
+                table.push(
+                    [res[i].department_id, res[i].department_name, res[i].over_head_costs, resOne[i].product_sales, profit]
+                );
             }
+            console.log(table.toString());
+
             sleep(2000);
             runAction();
         });

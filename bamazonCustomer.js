@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require('inquirer');
+var Table = require('cli-table');
 
 var newQuantity = 0;
 var myQuantity = 0;
@@ -37,17 +38,23 @@ function sleep(milliseconds) {
     }
 }
 
+var table = new Table({
+    head: ['ID', 'Product Name', 'Department', 'Price', 'Quantity']
+});
+
 
 function buyProduct() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         // Log all results of the SELECT statement
-        console.log("ID | Product Name | Department | Price | Quantity");
 
         var i; for (i = 0; i < res.length; i++) {
-            console.log("---------------------------------------------------------------")
-            console.log("| ID: " + res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + "$" + res[i].price + " | " + res[i].quantity + " in stock");
+            table.push(
+                [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].quantity]
+            );
+
         }
+        console.log(table.toString());
         console.log("\n");
 
         inquirer
@@ -77,17 +84,16 @@ function buyProduct() {
                         var price = res[0].price;
                         var cost = price * inputQuantity;
                         var productSales = cost + res[0].product_sales;
-                        console.log(res[0].product_sales);
 
-                        var secondQuery = "UPDATE products SET quantity = " + newQuantity +  " WHERE item_id = " + answer.buy;
+                        var secondQuery = "UPDATE products SET quantity = " + newQuantity + " WHERE item_id = " + answer.buy;
                         connection.query(secondQuery, function (err, res) {
-                            
+
                             console.log("Your order has been processed. Thank you for shopping with us! \n Your order total amounts to: $" + cost);
                             sleep(1500);
                         });
-                        var thirdQuery = "UPDATE products SET product_sales = " + productSales +  " WHERE item_id = " + answer.buy;
+                        var thirdQuery = "UPDATE products SET product_sales = " + productSales + " WHERE item_id = " + answer.buy;
                         connection.query(thirdQuery, function (err, res) {
-                            
+
                             console.log("Calculating product sales");
                             buyProduct();
                         });
