@@ -184,7 +184,8 @@ function addProduct() {
                     // Call updateProduct AFTER the INSERT completes
                 }
             );
+            runAction();
         });
-        runAction();
+        
 
 }
