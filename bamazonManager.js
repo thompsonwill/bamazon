@@ -88,18 +88,23 @@ function readProducts() {
     });
 }
 
+var table2 = new Table({
+    head: ['ID', 'Product Name', 'Department', 'Price', 'Quantity']
+});
+
+
 function lowInventory() {
     connection.query("SELECT * FROM products WHERE quantity < 5", function (err, res) {
         if (err) throw err;
         // Log all results of the SELECT statement
         console.log("\nLOW INVENTORY - PLEASE ORDER\n");
 
-        var i; for (i = 0; i < res.length; i++) {
-            table.push(
-                [res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].quantity]
+        var j; for (j = 0; j < res.length; j++) {
+            table2.push(
+                [res[j].item_id, res[j].product_name, res[j].department_name, res[j].price, res[j].quantity]
             );
         }
-        console.log(table.toString());
+        console.log(table2.toString());
         runAction();
     });
 }
